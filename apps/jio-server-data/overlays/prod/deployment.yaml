@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jio-server-data
+  namespace: jiaa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jio-server-data
+  template:
+    metadata:
+      labels:
+        app: jio-server-data
+    spec:
+      containers:
+        - name: jio-server-data
+          image: 541673202749.dkr.ecr.ap-northeast-2.amazonaws.com/jio-server-data:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: "production"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
