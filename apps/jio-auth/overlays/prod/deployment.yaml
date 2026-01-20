@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jio-auth
+  namespace: jiaa
+  labels:
+    app: jio-auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jio-auth
+  template:
+    metadata:
+      labels:
+        app: jio-auth
+    spec:
+      containers:
+        - name: jio-auth
+          image: 541673202749.dkr.ecr.ap-northeast-2.amazonaws.com/jiaa/jiaa-server-auth:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SERVER_PORT
+              value: "8080"
+            - name: POSTGRES_HOST
+              value: "jiaa-postgres.jiaa.svc.cluster.local"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "jiaa_auth"
+            - name: POSTGRES_USER
+              value: "jiaa"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: secret
+            - name: GOOGLE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth-secret
+                  key: client-id
+            - name: GOOGLE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google-oauth-secret
+                  key: client-secret
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

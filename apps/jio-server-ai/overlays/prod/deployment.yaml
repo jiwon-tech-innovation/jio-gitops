@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jio-server-ai
+  namespace: jiaa
+  labels:
+    app: jio-server-ai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jio-server-ai
+  template:
+    metadata:
+      labels:
+        app: jio-server-ai
+    spec:
+      containers:
+        - name: jio-server-ai
+          image: 541673202749.dkr.ecr.ap-northeast-2.amazonaws.com/jiaa-server-ai:latest
+          ports:
+            - containerPort: 8000
+              name: http
+            - containerPort: 50051
+              name: grpc
+          env:
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka.kafka.svc.cluster.local:9092"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: redis-password
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
