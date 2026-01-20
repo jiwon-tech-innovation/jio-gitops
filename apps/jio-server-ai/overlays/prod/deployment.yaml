@@ -26,6 +26,10 @@ spec:
           env:
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "kafka.kafka.svc.cluster.local:9092"
+            - name: REDIS_HOST
+              value: "redis-master.jiaa-system.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:

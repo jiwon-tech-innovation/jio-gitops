@@ -30,27 +30,35 @@ spec:
             - name: POSTGRES_DB
               value: "jiaa_auth"
             - name: POSTGRES_USER
-              value: "jiaa"
+              valueFrom:
+                secretKeyRef:
+                  name: jiaa-auth-secret
+                  key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-credentials
-                  key: password
+                  name: jiaa-auth-secret
+                  key: POSTGRES_PASSWORD
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: jwt-secret
-                  key: secret
+                  name: jiaa-auth-secret
+                  key: JWT_SECRET
             - name: GOOGLE_CLIENT_ID
               valueFrom:
                 secretKeyRef:
-                  name: google-oauth-secret
-                  key: client-id
+                  name: jiaa-auth-secret
+                  key: GOOGLE_CLIENT_ID
             - name: GOOGLE_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: google-oauth-secret
-                  key: client-secret
+                  name: jiaa-auth-secret
+                  key: GOOGLE_CLIENT_SECRET
+            - name: GOOGLE_REDIRECT_URI
+              valueFrom:
+                secretKeyRef:
+                  name: jiaa-auth-secret
+                  key: GOOGLE_REDIRECT_URI
           resources:
             requests:
               memory: "256Mi"
