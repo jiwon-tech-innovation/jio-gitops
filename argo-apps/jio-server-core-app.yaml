@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jio-server-core
+  namespace: cicd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jiwon-tech-innovation/jio-gitops.git
+    targetRevision: HEAD
+    path: apps/jio-server-core/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jiaa
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
