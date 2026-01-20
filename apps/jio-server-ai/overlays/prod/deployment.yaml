@@ -15,6 +15,7 @@ spec:
       labels:
         app: jio-server-ai
     spec:
+      serviceAccountName: jiaa-server-ai
       containers:
         - name: jio-server-ai
           image: 541673202749.dkr.ecr.ap-northeast-2.amazonaws.com/jiaa-server-ai:latest
@@ -24,17 +25,28 @@ spec:
             - containerPort: 50051
               name: grpc
           env:
+            - name: PROJECT_NAME
+              value: "JIAA Intelligence Worker"
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "kafka.kafka.svc.cluster.local:9092"
-            - name: REDIS_HOST
-              value: "redis-master.jiaa-system.svc.cluster.local"
-            - name: REDIS_PORT
-              value: "6379"
-            - name: REDIS_PASSWORD
+            - name: AWS_REGION
+              value: "us-east-1"
+            - name: BEDROCK_REGION
+              value: "us-east-1"
+            
+            # --- Secrets ---
+            - name: OPENAI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: redis
-                  key: redis-password
+                  name: jiaa-ai-secret
+                  key: openai_api_key
+            - name: GROQ_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jiaa-groq-secret
+                  key: groq_api_key
+            
+            # --- Database (Postgres) ---
             - name: POSTGRES_HOST
               value: "jiaa-db.cveg64k8yuia.ap-northeast-2.rds.amazonaws.com"
             - name: POSTGRES_PORT
@@ -44,18 +56,38 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: jiaa-auth-secret
-                  key: POSTGRES_USER
+                  name: jiaa-db-secret
+                  key: pg_user
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jiaa-auth-secret
-                  key: POSTGRES_PASSWORD
-            - name: OPENAI_API_KEY
+                  name: jiaa-db-secret
+                  key: pg_password
+
+            # --- Redis ---
+            - name: REDIS_HOST
+              value: "redis-master.jiaa-system.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: jiaa-ai-secret
-                  key: openai_api_key
+                  name: jiaa-redis-secret
+                  key: password
+            
+            # --- InfluxDB ---
+            - name: INFLUXDB_URL
+              value: "http://jiaa-influxdb:8086"
+            - name: INFLUXDB_ORG
+              value: "jiaa"
+            - name: INFLUXDB_BUCKET
+              value: "sensor_data"
+            - name: INFLUXDB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: jiaa-influx-secret
+                  key: token
+
           resources:
             requests:
               memory: "512Mi"
