@@ -21,6 +21,8 @@ spec:
           env:
             - name: NODE_ENV
               value: "production"
+            - name: KAFKA_BROKER
+              value: "kafka.kafka.svc.cluster.local:9092"
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
