@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: jio-server-data
-          image: 541673202749.dkr.ecr.ap-northeast-2.amazonaws.com/jio-server-data:latest
+          image: 541673202749.dkr.ecr.ap-northeast-2.amazonaws.com/jiaa-server-data:latest
           ports:
             - containerPort: 3000
           env:
