@@ -21,6 +21,11 @@ spec:
           env:
             - name: NODE_ENV
               value: "production"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: redis-password
           resources:
             requests:
               memory: "256Mi"
