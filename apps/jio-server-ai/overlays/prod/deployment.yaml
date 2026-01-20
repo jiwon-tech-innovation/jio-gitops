@@ -35,6 +35,27 @@ spec:
                 secretKeyRef:
                   name: redis
                   key: redis-password
+            - name: POSTGRES_HOST
+              value: "jiaa-db.cveg64k8yuia.ap-northeast-2.rds.amazonaws.com"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: "jiaa"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: jiaa-auth-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jiaa-auth-secret
+                  key: POSTGRES_PASSWORD
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jiaa-ai-secret
+                  key: openai_api_key
           resources:
             requests:
               memory: "512Mi"

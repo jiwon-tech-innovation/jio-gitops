@@ -24,11 +24,11 @@ spec:
             - name: SERVER_PORT
               value: "8080"
             - name: POSTGRES_HOST
-              value: "jiaa-postgres.jiaa.svc.cluster.local"
+              value: "jiaa-db.cveg64k8yuia.ap-northeast-2.rds.amazonaws.com"
             - name: POSTGRES_PORT
               value: "5432"
             - name: POSTGRES_DB
-              value: "jiaa_auth"
+              value: "jiaa"
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
