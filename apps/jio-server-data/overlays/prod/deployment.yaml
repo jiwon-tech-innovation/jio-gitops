@@ -4,7 +4,7 @@ metadata:
   name: jio-server-data
   namespace: jiaa
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: jio-server-data
@@ -17,7 +17,7 @@ spec:
         - name: jio-server-data
           image: 541673202749.dkr.ecr.ap-northeast-2.amazonaws.com/jiaa-server-data:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 8083
           env:
             - name: NODE_ENV
               value: "production"

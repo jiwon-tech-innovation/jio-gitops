@@ -7,4 +7,4 @@ resources:
 
 images:
   - name: 541673202749.dkr.ecr.ap-northeast-2.amazonaws.com/jiaa-server-ai
-    digest: "sha256:c18953ca8e106f506c2944daf94d6e03112315a59fbb39b5fc3ef33103853baf"
+    newTag: "latest"
